@@ -22,9 +22,10 @@ class User
     {
         // Create query
         $query = 'INSERT INTO ' . $this->table .
-            ' SET uid = :uid,
-            username = :username,
-            phone_number = :phone_number,
+            ' (uid, username, phone_number, profile_image) 
+            VALUES (:uid, :username, :phone_number, :profile_image) 
+            ON DUPLICATE KEY UPDATE 
+            username = :username, 
             profile_image = :profile_image';
 
         // Prepare statement
