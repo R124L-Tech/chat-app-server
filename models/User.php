@@ -10,6 +10,8 @@ class User
     public $username;
     public $phone_number;
     public $profile_image;
+    public $contacts;
+    public $filteredContacts = [];
 
     // Constructor
     public function __construct($db)
@@ -52,5 +54,34 @@ class User
         printf("Error: %s.\n", $stmt->error);
 
         return false;
+    }
+
+    // read matched contact
+    public function readMatchContact()
+    {
+        // Create query
+        $queryCondition = "WHERE '' in (phone_number) ";
+        foreach ($this->contacts as $c) {
+            $queryCondition .= "or '" . $c . "' in (phone_number)";
+        }
+        $query = "SELECT * FROM users " . $queryCondition;
+
+        // Prepare statement
+        $stmt = $this->conn->prepare($query);
+
+        // Execute query
+        $stmt->execute();
+        $row = $stmt->fetchAll();
+
+        // set properties
+        foreach ($row as $contact) {
+            $arr = array(
+                "id" => $contact['uid'],
+                "username" => $contact['username'],
+                "phoneNumber" => $contact['phone_number'],
+                "profileImage" => $contact['profile_image'],
+            );
+            array_push($this->filteredContacts, $arr);
+        }
     }
 }
