@@ -3,7 +3,7 @@ class User
 {
     // Database
     private $conn;
-    private $table = 'users';
+    private $table = 'user';
 
     // User properties
     public $uid;
@@ -64,7 +64,7 @@ class User
         foreach ($this->contacts as $c) {
             $queryCondition .= "or '" . $c . "' in (phone_number)";
         }
-        $query = "SELECT * FROM users " . $queryCondition;
+        $query = "SELECT * FROM " . $this->table . " " . $queryCondition;
 
         // Prepare statement
         $stmt = $this->conn->prepare($query);

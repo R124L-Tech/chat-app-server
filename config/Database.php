@@ -3,7 +3,7 @@ class Database
 {
   // DB Params
   private $host = 'localhost';
-  private $db_name = 'chat_app';
+  private $db_name = 'teq_chat';
   private $username = 'root';
   private $password = '';
   private $conn;
