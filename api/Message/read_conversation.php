@@ -17,8 +17,8 @@ $message = new Message($db);
 
 // Get raw posted data
 $data = json_decode(file_get_contents("php://input"));
-$message->sender = $data->sender;
-$message->receiver = $data->receiver;
+$message->user = $data->user;
+$message->target = $data->target;
 
 // Get contacts
 echo json_encode($message->readConversation());
