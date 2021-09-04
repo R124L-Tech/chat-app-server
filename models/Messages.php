@@ -7,6 +7,7 @@ class Message
 
     // Message properties
     public $messages = [];
+    public $message;
     public $user;
     public $target;
 
@@ -39,6 +40,7 @@ class Message
         // set properties
         foreach ($row as $msg) {
             $arr = array(
+                "id" => $msg['id'],
                 "sendTime" => $msg['send_time'],
                 "type" => $msg['sender'] == $this->user ? "send" : "receive",
                 "message" => $msg['message'],
@@ -46,5 +48,28 @@ class Message
             array_push($this->messages, $arr);
         }
         return $this->messages;
+    }
+
+    // send message
+    public function sendMessage()
+    {
+        // create query
+        $query = "INSERT INTO " . $this->table . "  
+        VALUES (NULL, :user, :target, :message, current_timestamp())";
+
+        // prepare statement
+        $stmt = $this->conn->prepare($query);
+
+        // bind params
+        $stmt->bindParam(':user', $this->user);
+        $stmt->bindParam(':target', $this->target);
+        $stmt->bindParam(':message', $this->message);
+
+        // Execute query
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
