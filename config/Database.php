@@ -10,9 +10,9 @@ class Database
 
   // HOSTED SERVER
   // private $host = 'localhost';
-  // private $db_name = 'u110754158_egloox_home';
-  // private $username = 'u110754158_egloox';
-  // private $password = '4m*cO/bZ?4T';
+  // private $db_name = 'u110754158_teq_chat';
+  // private $username = 'u110754158_root';
+  // private $password = '^M1Y|4F~lVb';
   // private $conn;
 
   // DB Connect

@@ -24,7 +24,7 @@ class Message
         $query = "SELECT * FROM " . $this->table . " 
                 WHERE :user in (sender) and :target in (receiver) 
                 OR :target in (sender) and :user in (receiver)
-                ORDER BY send_time";
+                ORDER BY send_time DESC";
 
         // prepare statement
         $stmt = $this->conn->prepare($query);
