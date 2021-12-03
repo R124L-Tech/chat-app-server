@@ -6,19 +6,14 @@ header('Access-Control-Allow-Methods: POST');
 header('Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, Authorization, X-Requested-With');
 
 include_once '../../config/Database.php';
-include_once '../../models/User.php';
+include_once '../../models/Jawaban.php';
 
 // Instantiate DB & connect
 $database = new Database();
 $db = $database->connect();
 
-// instantiate user object
-$user = new User($db);
-
-// Get raw posted data
-$data = json_decode(file_get_contents("php://input"));
-$user->contacts = $data;
+// instantiate jawaban object
+$jawaban = new Jawaban($db);
 
 // Get contacts
-$user->readMatchContact();
-echo json_encode($user->filteredContacts);
+echo json_encode($jawaban->getJawaban());

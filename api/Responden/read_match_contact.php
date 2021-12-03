@@ -6,19 +6,19 @@ header('Access-Control-Allow-Methods: POST');
 header('Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, Authorization, X-Requested-With');
 
 include_once '../../config/Database.php';
-include_once '../../models/Messages.php';
+include_once '../../models/User.php';
 
 // Instantiate DB & connect
 $database = new Database();
 $db = $database->connect();
 
-// instantiate message object
-$message = new Message($db);
+// instantiate user object
+$user = new Responden($db);
 
 // Get raw posted data
 $data = json_decode(file_get_contents("php://input"));
-$message->user = $data->user;
-$message->target = $data->target;
+$user->contacts = $data;
 
 // Get contacts
-echo json_encode($message->readConversation());
+$user->readMatchContact();
+echo json_encode($user->filteredContacts);

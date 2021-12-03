@@ -6,24 +6,17 @@ header('Access-Control-Allow-Methods: POST');
 header('Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, Authorization, X-Requested-With');
 
 include_once '../../config/Database.php';
-include_once '../../models/Messages.php';
+include_once '../../models/Lagu.php';
 
 // Instantiate DB & connect
 $database = new Database();
 $db = $database->connect();
 
-// instantiate message object
-$message = new Message($db);
+// instantiate inputs object
+$lagu = new Lagu($db);
 
 // Get raw posted data
 $data = json_decode(file_get_contents("php://input"));
-$message->user = $data->user;
-$message->target = $data->target;
-$message->message = $data->message;
-
-// Get contacts
-if ($message->sendMessage()) {
-    echo ('✔ MESSAGE SEND SUCCESSFULLY!');
-} else {
-    echo ('FAILED TO SEND MESSAGE🚫');
-}
+$lagu->dataLagu = $data;
+$lagu->upload();
+echo ('✔ DATA SUCCESSFULLY UPLOAD');

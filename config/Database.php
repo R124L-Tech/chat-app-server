@@ -3,7 +3,7 @@ class Database
 {
   // DB Params
   private $host = 'localhost';
-  private $db_name = 'teq_chat';
+  private $db_name = 'survei_api';
   private $username = 'root';
   private $password = '';
   private $conn;
