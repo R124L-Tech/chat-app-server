@@ -20,16 +20,22 @@ class Jawaban
         $query = 'INSERT INTO jawaban (id_responden, id_lagu, pernah_dengar, sumber, popularitas, sentimen) 
         VALUES (:idResponden, :idLagu,  :pernahDengar, :sumber, :popularitas, :sentimen)';
 
+        // try {
         foreach ($this->jawaban as $ans) {
+            $num = intval($ans->pernahDengar) - 1;
             $stmt = $this->conn->prepare($query);
             $stmt->bindParam(':idResponden', $this->idResponden);
             $stmt->bindParam(':idLagu', $ans->idLagu);
-            $stmt->bindParam(':pernahDengar', $ans->pernahDengar - 1);
+            $stmt->bindParam(':pernahDengar', $num);
             $stmt->bindParam(':sumber', $ans->sumber);
             $stmt->bindParam(':popularitas', $ans->popularitas);
             $stmt->bindParam(':sentimen', $ans->sentimen);
             $stmt->execute();
         }
+        //     return true;
+        // } catch (\Throwable $th) {
+        //     return false;
+        // }
     }
 
 

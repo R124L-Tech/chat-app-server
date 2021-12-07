@@ -6,26 +6,20 @@ header('Access-Control-Allow-Methods: POST');
 header('Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods, Authorization, X-Requested-With');
 
 include_once '../../config/Database.php';
-include_once '../../models/Jawaban.php';
+include_once '../../models/Responden.php';
 
 // Instantiate DB & connect
 $database = new Database();
 $db = $database->connect();
 
-// instantiate jawaban object
-$jwb = new Jawaban($db);
+// instantiate responden object
+$responden = new Responden($db);
 
 // Get raw posted data
 $data = json_decode(file_get_contents("php://input"));
-$jwb->idResponden = $data->idResponden;
-$jwb->jawaban = $data->jawaban;
-// $jwb->uploadJawaban();
+$responden->idResponden = $data->idResponden;
+$responden->lelah = $data->lelah;
+$responden->mengantuk = $data->mengantuk;
 
-// echo json_encode($data);
-
-// Get contacts
-if ($jwb->uploadJawaban()) {
-    echo ('✔ MESSAGE SEND SUCCESSFULLY!');
-} else {
-    echo ('FAILED TO SEND MESSAGE🚫');
-}
+// update data
+$responden->updateKondisi();

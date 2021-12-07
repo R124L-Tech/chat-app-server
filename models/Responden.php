@@ -6,11 +6,13 @@ class Responden
     private $table = 'responden';
 
     // Responden properties
-    public $nama;
-    public $jkel;
-    public $tglLahir;
-    public $seringDengar;
-    public $ikutPerkembangan;
+    // public $nama;
+    // public $jkel;
+    // public $tglLahir;
+    // public $seringDengar;
+    // public $ikutPerkembangan;
+    // public $lelah;
+    // public $mengantuk;
 
     // Constructor
     public function __construct($db)
@@ -22,8 +24,8 @@ class Responden
     public function create()
     {
         // Create query
-        $query = 'INSERT INTO responden (nama, jenis_kelamin, tanggal_lahir, sering_dengar, ikut_perkembangan) 
-            VALUES (:nama, :jkel, :tglLahir, :seringDengar, :ikutPerkembangan)';
+        $query = 'INSERT INTO responden (nama, jenis_kelamin, tanggal_lahir, sering_dengar, ikut_perkembangan, lelah_before, mengantuk_before) 
+            VALUES (:nama, :jkel, :tglLahir, :seringDengar, :ikutPerkembangan,:lelah, :mengantuk)';
 
         // Prepare statement
         $stmt = $this->conn->prepare($query);
@@ -39,6 +41,8 @@ class Responden
         $stmt->bindParam(':tglLahir', $this->tglLahir);
         $stmt->bindParam(':seringDengar', $this->seringDengar);
         $stmt->bindParam(':ikutPerkembangan', $this->ikutPerkembangan);
+        $stmt->bindParam(':lelah', $this->lelah);
+        $stmt->bindParam(':mengantuk', $this->mengantuk);
 
         // Execute query
         if ($this->nama != '') {
@@ -50,6 +54,23 @@ class Responden
         printf("Error: %s.\n", $stmt->error);
 
         return false;
+    }
+
+    // update kondisi
+    public function updateKondisi()
+    {
+        // create query
+        $query = "UPDATE `responden` SET `lelah_after` = :lelah, `mengantuk_after` = :mengantuk WHERE `responden`.`id_responden` = :idResponden";
+
+        // Prepare statement
+        $stmt = $this->conn->prepare($query);
+
+        // Bind data
+        $stmt->bindParam(':idResponden', $this->idResponden);
+        $stmt->bindParam(':lelah', $this->lelah);
+        $stmt->bindParam(':mengantuk', $this->mengantuk);
+
+        $stmt->execute();
     }
 
     // read matched contact

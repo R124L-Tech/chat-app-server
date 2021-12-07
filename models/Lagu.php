@@ -5,13 +5,13 @@ class Lagu
     private $conn;
 
     // Lagu properties
-    public $dataLagu;
-    public $idYoutube;
-    public $artis;
+    // public $dataLagu;
+    // public $idYoutube;
+    // public $artis;
+    // public $tahun;
+    // public $topik;
     public $judul;
-    public $tahun;
-    public $topik;
-    public $lirik;
+    public $Songs = [];
 
     // Constructor
     public function __construct($db)
@@ -42,32 +42,69 @@ class Lagu
         }
     }
 
-    // read matched contact
-    public function readMatchContact()
+    // get All songs
+    public function getJudulLagu()
     {
-        // upload query
-        $queryCondition = "WHERE '' in (artis) ";
-        foreach ($this->contacts as $c) {
-            $queryCondition .= "or '" . $c . "' in (artis)";
-        }
-        $query = "SELECT * FROM " . $this->table . " " . $queryCondition;
+        // create query
+        $query = "SELECT judul, topik, id_lagu FROM lagu
+        ORDER BY case when topik = :topik1 then 1
+                      when topik = :topik2 then 2
+                      when topik = :topik3 then 3
+                      else 4
+                 end asc";
 
-        // Prepare statement
+        // prepare statement
         $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':topik1', $this->topik1);
+        $stmt->bindParam(':topik2', $this->topik2);
+        $stmt->bindParam(':topik3', $this->topik3);
 
         // Execute query
         $stmt->execute();
         $row = $stmt->fetchAll();
 
         // set properties
-        foreach ($row as $contact) {
+        foreach ($row as $ans) {
+            // $arr = array(
+            //     "id" => $ans['id_lagu'],
+            //     "youtubeId" => $ans['id_youtube'],
+            //     "artis" => $ans['artis'],
+            //     "topik" => $ans['topik'],
+            //     "judul" => $ans['judul'],
+            //     "tahun" => $ans['tahun'],
+            //     "lirik" => $ans['lirik'],
+            // );
+            array_push($this->Songs, $ans['judul']);
+        }
+        return $this->Songs;
+    }
+
+    // get matched song
+    public function getMatchSongs()
+    {
+        // upload query
+        $query = "SELECT * FROM lagu WHERE lagu.judul LIKE :judul";
+
+        // Prepare statement
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':judul', $this->judul);
+
+        // Execute query
+        $stmt->execute();
+        $row = $stmt->fetchAll();
+
+        // set properties
+        foreach ($row as $ans) {
             $arr = array(
-                "id" => $contact['uid'],
-                "idYoutube" => $contact['idYoutube'],
-                "phoneNumber" => $contact['artis'],
-                "profileImage" => $contact['tglLahir'],
+                "id" => $ans['id_lagu'],
+                "youtubeId" => $ans['id_youtube'],
+                "artis" => $ans['artis'],
+                "topik" => $ans['topik'],
+                "judul" => $ans['judul'],
+                "tahun" => $ans['tahun'],
+                "lirik" => $ans['lirik'],
             );
-            array_push($this->filteredContacts, $arr);
+            return $arr;
         }
     }
 }

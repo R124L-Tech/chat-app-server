@@ -22,15 +22,8 @@ $responden->jkel = $data->jkel;
 $responden->tglLahir = $data->tglLahir;
 $responden->seringDengar = $data->seringDengar;
 $responden->ikutPerkembangan = $data->ikutPerkembangan - 1;
+$responden->lelah = $data->lelahBefore;
+$responden->mengantuk = $data->mengantukBefore;
 
 // Crete responden
 echo json_encode(['idResponden' => $responden->create()]);
-// if ($responden->create()) {
-//     echo json_encode(
-//         array('message' => 'User data updated!')
-//     );
-// } else {
-//     echo json_encode(
-//         array('message' => 'User data not updated!')
-//     );
-// }
