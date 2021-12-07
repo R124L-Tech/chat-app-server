@@ -3,16 +3,8 @@ class Responden
 {
     // Database
     private $conn;
-    private $table = 'responden';
 
     // Responden properties
-    // public $nama;
-    // public $jkel;
-    // public $tglLahir;
-    // public $seringDengar;
-    // public $ikutPerkembangan;
-    // public $lelah;
-    // public $mengantuk;
 
     // Constructor
     public function __construct($db)
@@ -71,34 +63,5 @@ class Responden
         $stmt->bindParam(':mengantuk', $this->mengantuk);
 
         $stmt->execute();
-    }
-
-    // read matched contact
-    public function readMatchContact()
-    {
-        // Create query
-        $queryCondition = "WHERE '' in (jkel) ";
-        foreach ($this->contacts as $c) {
-            $queryCondition .= "or '" . $c . "' in (jkel)";
-        }
-        $query = "SELECT * FROM " . $this->table . " " . $queryCondition;
-
-        // Prepare statement
-        $stmt = $this->conn->prepare($query);
-
-        // Execute query
-        $stmt->execute();
-        $row = $stmt->fetchAll();
-
-        // set properties
-        foreach ($row as $contact) {
-            $arr = array(
-                "id" => $contact['uid'],
-                "nama" => $contact['nama'],
-                "phoneNumber" => $contact['jkel'],
-                "profileImage" => $contact['tglLahir'],
-            );
-            array_push($this->filteredContacts, $arr);
-        }
     }
 }

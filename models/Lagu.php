@@ -5,11 +5,6 @@ class Lagu
     private $conn;
 
     // Lagu properties
-    // public $dataLagu;
-    // public $idYoutube;
-    // public $artis;
-    // public $tahun;
-    // public $topik;
     public $judul;
     public $Songs = [];
 

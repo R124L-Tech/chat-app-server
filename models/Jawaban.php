@@ -32,10 +32,6 @@ class Jawaban
             $stmt->bindParam(':sentimen', $ans->sentimen);
             $stmt->execute();
         }
-        //     return true;
-        // } catch (\Throwable $th) {
-        //     return false;
-        // }
     }
 
 
