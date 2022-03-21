@@ -16,8 +16,8 @@ class Responden
     public function create()
     {
         // Create query
-        $query = 'INSERT INTO responden (nama, jenis_kelamin, tanggal_lahir, sering_dengar, ikut_perkembangan, lelah_before, mengantuk_before) 
-            VALUES (:nama, :jkel, :tglLahir, :seringDengar, :ikutPerkembangan,:lelah, :mengantuk)';
+        $query = 'INSERT INTO responden (nama, jenis_kelamin, tanggal_lahir, sering_browsing) 
+            VALUES (:nama, :jkel, :tglLahir, :seringBrowsing)';
 
         // Prepare statement
         $stmt = $this->conn->prepare($query);
@@ -31,10 +31,7 @@ class Responden
         $stmt->bindParam(':nama', $this->nama);
         $stmt->bindParam(':jkel', $this->jkel);
         $stmt->bindParam(':tglLahir', $this->tglLahir);
-        $stmt->bindParam(':seringDengar', $this->seringDengar);
-        $stmt->bindParam(':ikutPerkembangan', $this->ikutPerkembangan);
-        $stmt->bindParam(':lelah', $this->lelah);
-        $stmt->bindParam(':mengantuk', $this->mengantuk);
+        $stmt->bindParam(':seringBrowsing', $this->seringBrowsing);
 
         // Execute query
         if ($this->nama != '') {
@@ -46,6 +43,21 @@ class Responden
         printf("Error: %s.\n", $stmt->error);
 
         return false;
+    }
+
+    // get matched song
+    public function getRespLength()
+    {
+        // upload query
+        $query = "SELECT * FROM responden";
+
+        // Prepare statement
+        $stmt = $this->conn->prepare($query);
+
+        // Execute query
+        $stmt->execute();
+        $arr = array('countResp' => $stmt->rowCount(),);
+        return $arr;
     }
 
     // update kondisi

@@ -17,52 +17,50 @@ class Jawaban
     // upload responden
     public function uploadJawaban()
     {
-        $query = 'INSERT INTO jawaban (id_responden, id_lagu, pernah_dengar, sumber, popularitas, sentimen) 
-        VALUES (:idResponden, :idLagu,  :pernahDengar, :sumber, :popularitas, :sentimen)';
-
-        // try {
         foreach ($this->jawaban as $ans) {
-            $num = intval($ans->pernahDengar) - 1;
+            $query = 'INSERT INTO `jawaban` (
+                `id_responden`, 
+                `domain_berita`, 
+                `learnability`, 
+                `match`, 
+                `control`,
+                `consistency`, 
+                `error_prevention`, 
+                `recognition`, 
+                `flexibility`, 
+                `asthetic`, 
+                `recognize_errors`, 
+                `help`
+                ) VALUES (
+                    :idResponden,
+                    :domainBerita, 
+                    :learnability, 
+                    :match, 
+                    :control, 
+                    :consistency, 
+                    :errorPrevention, 
+                    :recognition, 
+                    :flexibility, 
+                    :asthetic, 
+                    :recognizeErrors, 
+                    :help
+                    );';
+
             $stmt = $this->conn->prepare($query);
+
             $stmt->bindParam(':idResponden', $this->idResponden);
-            $stmt->bindParam(':idLagu', $ans->idLagu);
-            $stmt->bindParam(':pernahDengar', $num);
-            $stmt->bindParam(':sumber', $ans->sumber);
-            $stmt->bindParam(':popularitas', $ans->popularitas);
-            $stmt->bindParam(':sentimen', $ans->sentimen);
+            $stmt->bindParam(':domainBerita', $ans->domainBerita);
+            $stmt->bindParam(':learnability', $ans->learnability);
+            $stmt->bindParam(':match', $ans->match);
+            $stmt->bindParam(':control', $ans->control);
+            $stmt->bindParam(':consistency', $ans->consistency);
+            $stmt->bindParam(':errorPrevention', $ans->errorPrevention);
+            $stmt->bindParam(':recognition', $ans->recognition);
+            $stmt->bindParam(':flexibility', $ans->flexibility);
+            $stmt->bindParam(':asthetic', $ans->asthetic);
+            $stmt->bindParam(':recognizeErrors', $ans->recognizeErrors);
+            $stmt->bindParam(':help', $ans->help);
             $stmt->execute();
         }
-    }
-
-
-    // read conversation
-    public function getJawaban()
-    {
-        // create query
-        $getJawabanQuery = "SELECT responden.nama, responden.jenis_kelamin, responden.tanggal_lahir, jawaban.pernah_dengar, jawaban.dengar_dimana, jawaban.popularitas, jawaban.sentimen 
-        FROM responden INNER JOIN jawaban ON jawaban.id_responden = responden.id_responden";
-
-        // prepare statement
-        $stmt = $this->conn->prepare($getJawabanQuery);
-
-        // Execute query
-        $stmt->execute();
-        $row = $stmt->fetchAll();
-
-        // set properties
-        foreach ($row as $ans) {
-            $arr = array(
-                "id" => $ans['nama'],
-                "sendTime" => $ans['jenis_kelamin'],
-                "Jawaban" => $ans['tanggal_lahir'],
-                "sender" => $ans['pernah_dengar'],
-                "receiver" => $ans['dengar_dimana'],
-                "receiver" => $ans['popularitas']
-            );
-            array_push($this->Jawabans, $arr);
-        }
-        // update unread to false
-        // $this->updateUnread();
-        return $this->Jawabans;
     }
 }

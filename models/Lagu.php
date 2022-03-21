@@ -6,7 +6,7 @@ class Lagu
 
     // Lagu properties
     public $judul;
-    public $Songs = [];
+    public $Lagu = [];
 
     // Constructor
     public function __construct($db)
@@ -60,18 +60,9 @@ class Lagu
 
         // set properties
         foreach ($row as $ans) {
-            // $arr = array(
-            //     "id" => $ans['id_lagu'],
-            //     "youtubeId" => $ans['id_youtube'],
-            //     "artis" => $ans['artis'],
-            //     "topik" => $ans['topik'],
-            //     "judul" => $ans['judul'],
-            //     "tahun" => $ans['tahun'],
-            //     "lirik" => $ans['lirik'],
-            // );
-            array_push($this->Songs, $ans['judul']);
+            array_push($this->Lagu, $ans['judul']);
         }
-        return $this->Songs;
+        return $this->Lagu;
     }
 
     // get matched song
@@ -101,5 +92,53 @@ class Lagu
             );
             return $arr;
         }
+    }
+
+    // get matched song
+    public function getLagu()
+    {
+        // upload query
+        $query = "SELECT id_lagu, judul, topik, lirik FROM lagu";
+
+        // Prepare statement
+        $stmt = $this->conn->prepare($query);
+
+        // Execute query
+        $stmt->execute();
+        $row = $stmt->fetchAll();
+
+        // set properties
+        foreach ($row as $ans) {
+            $sum = 0;
+            $length = 0;
+
+            // upload query
+            $query2 = "SELECT sentimen FROM jawaban WHERE id_lagu=:idLagu";
+
+            // Prepare statement
+            $stmt2 = $this->conn->prepare($query2);
+            $stmt2->bindParam(':idLagu', $ans['id_lagu']);
+
+            // Execute query
+            $stmt2->execute();
+            $ans2 = $stmt2->fetchAll();
+
+            foreach ($ans2 as $sen) {
+                $sum += (int)$sen['sentimen'];
+                $length++;
+            }
+
+            $sentimen = $sum / $length;
+
+            $arr = array(
+                "sentimen" => $sentimen,
+                "id_lagu" => $ans['id_lagu'],
+                "judul" => $ans['judul'],
+                "topik" => $ans['topik'],
+                "lirik" => $ans['lirik'],
+            );
+            array_push($this->Lagu, $arr);
+        }
+        return $this->Lagu;
     }
 }

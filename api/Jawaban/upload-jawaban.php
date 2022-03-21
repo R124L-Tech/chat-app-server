@@ -19,9 +19,6 @@ $jwb = new Jawaban($db);
 $data = json_decode(file_get_contents("php://input"));
 $jwb->idResponden = $data->idResponden;
 $jwb->jawaban = $data->jawaban;
-// $jwb->uploadJawaban();
-
-// echo json_encode($data);
 
 // Get contacts
 if ($jwb->uploadJawaban()) {

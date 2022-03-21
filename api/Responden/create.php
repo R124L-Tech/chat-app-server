@@ -20,10 +20,7 @@ $data = json_decode(file_get_contents("php://input"));
 $responden->nama = $data->nama;
 $responden->jkel = $data->jkel;
 $responden->tglLahir = $data->tglLahir;
-$responden->seringDengar = $data->seringDengar;
-$responden->ikutPerkembangan = $data->ikutPerkembangan - 1;
-$responden->lelah = $data->lelahBefore;
-$responden->mengantuk = $data->mengantukBefore;
+$responden->seringBrowsing = $data->seringBrowsing;
 
 // Crete responden
 echo json_encode(['idResponden' => $responden->create()]);
